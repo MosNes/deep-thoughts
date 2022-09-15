@@ -1,3 +1,5 @@
+//import auth error handling from Apollo Server
+const { AuthenticationError } = require('apollo-server-express');
 const { User, Thought } = require('../models');
 
 const resolvers = {
@@ -34,6 +36,31 @@ const resolvers = {
             .populate('thoughts');
         }
 	},
+    
+    Mutation: {
+        //adds new user to db
+        addUser: async (parent, args) => {
+            const user = await User.create(args);
+            return user;
+        },
+
+        //user logs in and receives token
+        login: async (parent, { email, password }) => {
+            const user = await User.findOne({ email });
+
+            if (!user) {
+                throw new AuthenticationError('Email or Password incorrect!');
+            }
+
+            const correctPw = await user.isCorrectPassword(password);
+
+            if (!correctPw) {
+                throw new AuthenticationError('Email or Password incorrect!');
+            }
+
+            return user;
+        }
+    }
 };
 
 module.exports = resolvers;
