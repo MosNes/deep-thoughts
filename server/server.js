@@ -5,6 +5,9 @@ const { ApolloServer }  = require('apollo-server-express');
 //import typeDefs and resolvers
 const {typeDefs, resolvers} = require('./schemas');
 
+//import authorization middleware
+const { authMiddleware } = require('./utils/auth');
+
 //import mongoose connection object
 const db = require('./config/connection');
 const { isConstValueNode } = require('graphql');
@@ -13,7 +16,9 @@ const PORT = process.env.PORT || 3001;
 //create a new Apollo server and pass in schema data
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  //every request performs an auth check and updated request object will be pass to resolvers as context
+  context: authMiddleware
 });
 
 const app = express();
