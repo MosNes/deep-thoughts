@@ -9,7 +9,7 @@ import Home from './pages/Home';
 
 //create connection to backend apollo server
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3001/graphql'
+  uri: '/graphql'
 });
 
 const client = new ApolloClient({

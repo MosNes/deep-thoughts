@@ -1,3 +1,5 @@
+const path = require('path');
+
 const express = require('express');
 //import apollo server
 const { ApolloServer }  = require('apollo-server-express');
@@ -32,6 +34,16 @@ const startApolloServer = async (typeDefs, resolvers) => {
   //integrate our Apollo server with the Express application middleware
   server.applyMiddleware({ app });
 }
+
+//In Production, serve up static assets
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/build')));
+}
+
+//In Production, if user requests any URL that doesn't have a defined route, return the index.html file in the build folder
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+})
 
 db.once('open', () => {
   app.listen(PORT, () => {
