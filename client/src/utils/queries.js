@@ -16,4 +16,18 @@ export const QUERY_THOUGHTS = gql`
             }
         }
     }
+
+    query thought($id: ID!){
+        _id
+        thoughtText
+        createdAt
+        username
+        reactionCount
+        reactions {
+            _id
+            createdAt
+            username
+            reactionBody
+        }
+    }
 `;
