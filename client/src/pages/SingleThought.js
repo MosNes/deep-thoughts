@@ -1,22 +1,39 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import { QUERY_THOUGHT } from '../utils/queries'
 
 const SingleThought = props => {
 
+  //get thoughtId from URL params
   const {id: thoughtId} = useParams();
-  console.log(thoughtId);
+  console.log(thoughtId)
+  
+  //use thoughtId to make a GraphQL query to the DB
+  const { loading, data } = useQuery(QUERY_THOUGHT, {
+    variables: { id: thoughtId }
+  });
+
+  //if the returned data contains a 'thought' property, return it. Otherwise return an empty object.
+  const thought = data?.thought || {};
+  console.log(thought);
+
+  //if data returned from DB yet, render a 'loading' page
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div>
       <div className="card mb-3">
         <p className="card-header">
           <span style={{ fontWeight: 700 }} className="text-light">
-            Username
+            {thought.username}
           </span>{' '}
-          thought on createdAt
+          thought on {thought.createdAt}
         </p>
         <div className="card-body">
-          <p>Thought Text</p>
+          <p>{thought.thoughtText}</p>
         </div>
       </div>
     </div>
