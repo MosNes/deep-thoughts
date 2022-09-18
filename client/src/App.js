@@ -53,14 +53,16 @@ function App() {
                 path="/signup"
                 element={<Signup />}
               />
+              {/* nested paths inside of a route for parameters */}
+              <Route path="/profile">
+                <Route path=":username" element={<Profile />} />
+                <Route path="" element={<Profile />} />
+              </Route>
               <Route
-                path="/profile"
-                element={<Profile />}
-              />
-              <Route
-                path="/thought"
+                path="/thought/:id"
                 element={<SingleThought />}
               />
+
               {/* if user enters URL that doesn't match any of the previous routes, return the NoMatch page */}
               <Route
                 path="*"
