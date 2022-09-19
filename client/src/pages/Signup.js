@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { ADD_USER } from '../utils/mutations';
 
 const Signup = () => {
   const [formState, setFormState] = useState({ username: '', email: '', password: '' });
+
+  //creates the addUser function from the ADD_USER GraphQL query, to be called later
+  const [addUser, { error }] = useMutation(ADD_USER);
 
   // update state based on form input changes
   const handleChange = (event) => {
@@ -13,9 +18,21 @@ const Signup = () => {
     });
   };
 
-  // submit form
+  // submit form, async due to it having to interact with the DB
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+
+    // use try/catch instead of promises for error handling
+    try {
+      //execute addUser mutation adn pass in variable data from form
+      const {data} = await addUser({
+        //spreads out all the properties of formState to use them as variables for the query, since the properties have the same name as the expected variables
+        variables: {...formState}
+      });
+      console.log(data);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -55,6 +72,8 @@ const Signup = () => {
               <button className='btn d-block w-100' type='submit'>
                 Submit
               </button>
+              {/* display error if error exists */}
+              {error && <div>Sign Up Failed</div>}
             </form>
           </div>
         </div>
