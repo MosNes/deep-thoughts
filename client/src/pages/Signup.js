@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
+import Auth from '../utils/auth';
 
 const Signup = () => {
   const [formState, setFormState] = useState({ username: '', email: '', password: '' });
@@ -29,7 +30,9 @@ const Signup = () => {
         //spreads out all the properties of formState to use them as variables for the query, since the properties have the same name as the expected variables
         variables: {...formState}
       });
-      console.log(data);
+      
+      Auth.login(data.addUser.token);
+
     } catch (e) {
       console.error(e);
     }
