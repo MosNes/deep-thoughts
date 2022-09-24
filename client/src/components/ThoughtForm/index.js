@@ -20,7 +20,7 @@ const ThoughtForm = () => {
 
     return (
         <div>
-            {/* if character count is equal to 280, highlight the element with the text-error class */}
+            {/* if character count is equal to 280, highlight the element with the text-error class  */}
             <p className={`m-0 ${characterCount === 280 ? 'text-error' : ''}`}>
                 Character Count: {characterCount}/280
             </p>
