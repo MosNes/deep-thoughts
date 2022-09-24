@@ -1,4 +1,5 @@
 //collects all GraphQL mutations that change data in the database
+//these mutations are used by the useMutation hook in individual components to make GraphQL queries to the DB
 import { gql } from "@apollo/client";
 
 export const LOGIN_USER = gql`
@@ -53,3 +54,18 @@ export const ADD_THOUGHT = gql`
         }
     }
 `
+
+export const ADD_REACTION = gql`
+    mutation addReaction($thoughtId: ID!, $reactionBody: String!) {
+        addReaction(thoughtId: $thoughtId, reactionBody: $reactionBody) {
+            _id
+            reactionCount
+            reactions {
+                _id
+                reactionBody
+                createdAt
+                username
+            }
+        }
+    }
+`;
