@@ -15,7 +15,7 @@ const Home = () => {
 	//use object destructuring to extract `data` from the `useQuery` Hook's response and rename it `userData` to be more descriptive
 	const { data: userData } = useQuery(QUERY_ME_BASIC);
 
-  console.log("userdata", userData);
+	console.log('userdata', userData);
 
 	const thoughts = data?.thoughts || [];
 	console.log(thoughts);
